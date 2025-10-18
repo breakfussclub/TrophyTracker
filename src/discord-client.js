@@ -7,6 +7,8 @@ export async function getDiscordClient() {
     throw new Error('DISCORD_BOT_TOKEN environment variable is not set');
   }
 
+  console.log('Token exists, length:', token.length);
+
   const client = new Client({
     intents: [
       GatewayIntentBits.Guilds, 
@@ -15,6 +17,13 @@ export async function getDiscordClient() {
     ]
   });
 
-  await client.login(token);
+  try {
+    await client.login(token);
+    console.log('Login successful!');
+  } catch (error) {
+    console.error('Login failed:', error.message);
+    throw error;
+  }
+  
   return client;
 }
