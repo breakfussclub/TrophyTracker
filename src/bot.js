@@ -27,7 +27,9 @@ export async function startBot() {
     console.log('Steam API initialized');
   }
 
+  console.log('Connecting to Discord...');
   client = await getDiscordClient();
+  console.log('Discord client created, waiting for ready event...');
   
   client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
@@ -38,6 +40,14 @@ export async function startBot() {
     });
     
     console.log(`Scheduled achievement checks every 30 minutes`);
+  });
+
+  client.on('error', (error) => {
+    console.error('Discord client error:', error);
+  });
+
+  client.on('warn', (warning) => {
+    console.warn('Discord client warning:', warning);
   });
 
   client.on('messageCreate', async (message) => {
